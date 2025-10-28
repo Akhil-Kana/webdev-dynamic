@@ -42,6 +42,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Local SQLite database (should not be pushed)
+data/*.db
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
