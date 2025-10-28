@@ -15,11 +15,11 @@
         "url": "https://github.com/Akhil-Kana/webdev-dynamic"
     },
     "license": "MIT",
-    "main": "server.mjs",
+    "main": "dynamic_server.mjs",
     "type": "module",
     "scripts": {
-        "start": "node server.mjs",
-        "dev": "nodemon server.mjs"
+        "start": "node dynamic_server.mjs",
+        "dev": "nodemon dynamic_server.mjs"
     },
     "dependencies": {
         "express": "^4.19.0",
@@ -27,7 +27,7 @@
         "ejs": "^3.1.10",
         "chart.js": "^4.4.2"
     },
-    "devDependencies": {
+    "devDependencies": { 
         "nodemon": "^3.1.0"
     }
 }
