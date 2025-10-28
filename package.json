@@ -1,16 +1,33 @@
 {
-    "name": "dynamic_server",
-    "description": "Dynamic Server",
+    "name": "traffic-dynamic-webserver",
+    "description": "Dynamic web server project for traffic sustainability dataset. Built with Node.js, Express, SQLite3, and EJS.",
     "version": "1.0.0",
     "author": {
-        "name": "",
-        "email": ""
+        "name": "Caiden Kennedy",
+        "email": "cdkennedy45@gmail.com"
     },
     "contributors": [
+        "Colton Kayser",
+        "Akhil Kana"
     ],
-    "repository": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Akhil-Kana/webdev-dynamic"
+    },
+    "license": "MIT",
+    "main": "server.mjs",
+    "type": "module",
+    "scripts": {
+        "start": "node server.mjs",
+        "dev": "nodemon server.mjs"
+    },
     "dependencies": {
-        "express": "^5.1.0",
-        "sqlite3": "^5.1.7"
+        "express": "^4.19.0",
+        "sqlite3": "^5.1.7",
+        "ejs": "^3.1.10",
+        "chart.js": "^4.4.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0"
     }
 }
