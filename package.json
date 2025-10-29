@@ -3,12 +3,12 @@
     "description": "Dynamic web server project for traffic sustainability dataset. Built with Node.js, Express, SQLite3, and EJS.",
     "version": "1.0.0",
     "author": {
-        "name": "Caiden Kennedy",
-        "email": "cdkennedy45@gmail.com"
+        "name": "Akhil-Kana",
+        "email": "kana9520@stthomas.com"
     },
     "contributors": [
-        "Colton Kayser",
-        "Akhil Kana"
+        "kaysercolton",
+        "ckennedy45"
     ],
     "repository": {
         "type": "git",
