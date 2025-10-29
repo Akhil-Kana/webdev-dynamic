@@ -40,6 +40,32 @@ app.get('/api/top10', (req, res) => {
   });
 });
 
+app.use((req, res) => {
+  res.status(404).send(`
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8"/>
+      <title>404 Not Found</title>
+      <link rel="stylesheet" href="/style.css"/>
+      <style>
+        body { font-family: Arial, sans-serif; background: #0d1117; color: #e6edf3; margin: 0; }
+        .container { max-width: 800px; margin: 8rem auto; text-align: center; }
+        .btn { display: inline-block; background: #7c3aed; color: white; text-decoration: none; padding: .6rem 1rem; border-radius: .5rem; margin-top: 1rem; }
+        .btn:hover { filter: brightness(1.1); }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>404 — Page Not Found</h1>
+        <p>The requested route <code>${req.originalUrl}</code> does not exist on this server.</p>
+        <a class="btn" href="/">Back to Home</a>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
 app.listen(port, () => {
     console.log('Now listening on port ' + port);
 });
