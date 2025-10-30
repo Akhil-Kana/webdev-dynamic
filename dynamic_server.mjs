@@ -11,6 +11,9 @@ const templatesDir = path.resolve("templates");
 const app = express();
 app.use(express.static(publicDir));
 
+app.set('view engine', 'ejs');
+app.set('views', templatesDir);
+
 // explicit home route for render
 app.get("/", (req, res) => {
   res.sendFile("index.html", { root: publicDir });
@@ -32,9 +35,8 @@ app.get("/locations", (req, res) => {
     if (count < 2) return;
     let items = "";
     for (let r of rows) {
-      items += `<li><a href="/locations/${encodeURIComponent(r.name)}">${
-        r.name
-      }</a></li>`;
+      items += `<li><a href="/locations/${encodeURIComponent(r.name)}">${r.name
+        }</a></li>`;
     }
 
     let html = template
@@ -121,9 +123,8 @@ app.get("/types", (req, res) => {
 
     let items = "";
     for (let r of rows) {
-      items += `<li><a href="/types/${encodeURIComponent(r.tp)}">${
-        r.tp
-      }</a></li>`;
+      items += `<li><a href="/types/${encodeURIComponent(r.tp)}">${r.tp
+        }</a></li>`;
     }
 
     let html = template
@@ -155,6 +156,29 @@ app.get("/types", (req, res) => {
     }
   );
 });
+
+// PLACE THESE NEAR OTHER TOP-LEVEL ROUTES, ABOVE THE 404 HANDLER
+
+app.get('/charts', (req, res) => {
+  res.render('chart'); // templates/chart.ejs
+});
+
+app.get('/api/top10', (req, res) => {
+  const sql = `
+    SELECT location_name AS label,
+           AVG(avg_daily_vol) AS value
+    FROM counts
+    WHERE avg_daily_vol IS NOT NULL
+    GROUP BY location_name
+    ORDER BY value DESC
+    LIMIT 10;
+  `;
+  db.all(sql, [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
 
 // detaile route
 app.get("/locations/:name", (req, res) => {
@@ -197,11 +221,11 @@ app.get("/locations/:name", (req, res) => {
       <script>
         // Server data:
         const weekly = ${JSON.stringify(
-          weekly
-        )}; // [{label:'YYYY-WW', value:...}]
+      weekly
+    )}; // [{label:'YYYY-WW', value:...}]
         const dow    = ${JSON.stringify(
-          dow
-        )};    // [{dow:'0', value:...}] 0=Sun
+      dow
+    )};    // [{dow:'0', value:...}] 0=Sun
 
         // --- Weekly line or bar depending on density ---
         (function(){
