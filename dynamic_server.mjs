@@ -4,7 +4,6 @@ import * as path from "node:path";
 import express from "express";
 import sqlite3 from "sqlite3";
 
-const port = 8080;
 const publicDir = "./public";
 const templatesDir = "./templates";
 
@@ -452,10 +451,11 @@ app.get("/types/:tp", (req, res) => {
 
 // Generic 404 for bad routes
 app.use((req, res) => {
-  res.status(404).sendFile("404.html", { root: path.resolve("public") });
+  res.status(404).sendFile("404.html", { root: publicDir });
 });
 
 // Start the server
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
