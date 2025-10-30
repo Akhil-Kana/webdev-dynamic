@@ -11,6 +11,11 @@ const templatesDir = "./templates";
 const app = express();
 app.use(express.static(publicDir));
 
+// explicit home route for render
+app.get("/", (req, res) => {
+  res.sendFile(path.join(publicDir, "index.html"));
+});
+
 // Database connection
 const db = new sqlite3.Database("data/traffic.sqlite3", (err) => {
   if (err) console.error("SQLite open error:", err.message);
