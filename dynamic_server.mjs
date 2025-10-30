@@ -110,7 +110,7 @@ app.get("/years", (req, res) => {
       rows = r;
       count++;
       maybeSend();
-    }
+    } 
   );
 });
 
@@ -171,20 +171,44 @@ app.get("/charts", (req, res) => {
 });
 
 app.get("/api/top10", (req, res) => {
+  const { year } = req.query;
+  const params = [];
+  let where = 'WHERE avg_daily_vol IS NOT NULL';
+
+  if (year && /^\d{4}$/.test(year)) {
+    where += " AND strftime('%Y', count_date_start) = ?";
+    params.push(year);
+  }
+
   const sql = `
     SELECT location_name AS label,
            AVG(avg_daily_vol) AS value
     FROM counts
-    WHERE avg_daily_vol IS NOT NULL
+    ${where}
     GROUP BY location_name
     ORDER BY value DESC
     LIMIT 10;
   `;
-  db.all(sql, [], (err, rows) => {
+  
+  db.all(sql, params, (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
 });
+
+app.get('/api/years', (req, res) => {
+  const sql = `
+    SELECT DISTINCT strftime('%Y', count_date_start) AS yr
+    FROM counts
+    WHERE count_date_start IS NOT NULL
+    ORDER BY yr DESC;
+  `;
+  db.all(sql, [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows.map(r => r.yr));  // ["2025","2024","2023",...]
+  });
+});
+
 
 // detaile route
 app.get("/locations/:name", (req, res) => {

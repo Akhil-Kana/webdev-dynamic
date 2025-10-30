@@ -19,11 +19,21 @@
 
     <main>
         <section class="content">
-            <h1>Top 10 Traffic Locations</h1>
-            <canvas id="topChart" width="900" height="420"></canvas>
-        </section>
-    </main>
+    <h1>Top 10 Traffic Locations</h1>
 
+    <!-- Year filter -->
+    <div style="margin-bottom:12px">
+      <label for="yearSel"><strong>Filter by year:</strong></label>
+      <select id="yearSel">
+        <option value="">All years</option>
+      </select>
+    </div>
+
+    <canvas id="topChart" width="900" height="420"></canvas>
+  </section>
+</main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/chart-page.js"></script>
 </body>
 
