@@ -4,15 +4,16 @@ import * as path from "node:path";
 import express from "express";
 import sqlite3 from "sqlite3";
 
-const publicDir = "./public";
-const templatesDir = "./templates";
+// directories
+const publicDir = path.resolve("public");
+const templatesDir = path.resolve("templates");
 
 const app = express();
 app.use(express.static(publicDir));
 
 // explicit home route for render
 app.get("/", (req, res) => {
-  res.sendFile(path.join(publicDir, "index.html"));
+  res.sendFile("index.html", { root: publicDir });
 });
 
 // Database connection
