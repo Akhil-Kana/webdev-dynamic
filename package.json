@@ -22,12 +22,12 @@
         "dev": "nodemon dynamic_server.mjs"
     },
     "dependencies": {
-        "express": "^4.19.0",
-        "sqlite3": "^5.1.7",
+        "chart.js": "^4.4.2",
         "ejs": "^3.1.10",
-        "chart.js": "^4.4.2"
+        "express": "^4.21.2",
+        "sqlite3": "^5.1.7"
     },
-    "devDependencies": { 
+    "devDependencies": {
         "nodemon": "^3.1.0"
     }
 }
