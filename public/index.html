@@ -16,18 +16,193 @@
     </nav>
 
     <main class="container">
-      <h1>Traffic Home</h1>
-      <p>
-        Explore traffic counts by <strong>Location</strong>,
-        <strong>Year</strong>, and <strong>Type</strong>. Use the navigation
-        above to view data lists, then click an item to see details with a
-        chart.
-      </p>
-      <ul>
-        <li><a href="/locations">Browse locations</a></li>
-        <li><a href="/years">Browse years</a></li>
-        <li><a href="/types">Browse types</a></li>
-      </ul>
+      <section class="content card">
+        <h1>Toronto Traffic Counts (Midblock)</h1>
+        <p>
+          This site explores City of Toronto <em>midblock</em> traffic studies
+          short term counts (typically 1 day to 1–2 weeks) collected at road
+          segments across the city. Counts go back to the early 1990s and are
+          used to inform safety, traffic calming, and street design decisions.
+          <small>(Source: City of Toronto)</small>
+        </p>
+        <ul>
+          <li>
+            <strong>By Location:</strong> browse a street segment and see weekly
+            averages and weekday patterns.
+          </li>
+          <li>
+            <strong>By Year:</strong> view study results grouped by study year.
+          </li>
+          <li>
+            <strong>By Type:</strong> filter by the kind of study (volume only,
+            speed+volume, classification).
+          </li>
+        </ul>
+        <p style="margin-top: 8px">
+          <small>
+            Context: The City reports that motor vehicle count studies span from
+            the early 1990s onward and are used for initiatives like speed limit
+            changes and traffic calming. The specific Open Data catalogue entry
+            for “Traffic volumes, midblock vehicle speed, volume and
+            classification counts” is currently marked as “Retired.”
+          </small>
+        </p>
+      </section>
+
+      <section class="media">
+        <h3>What the Columns Mean</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>_id</td>
+              <td>Unique row identifier for the Open Data database.</td>
+            </tr>
+            <tr>
+              <td>count_id</td>
+              <td>
+                Unique identifier for each study; cross-references 15-minute
+                observations in svc_raw_data.
+              </td>
+            </tr>
+            <tr>
+              <td>count_type</td>
+              <td>
+                Type of data collected: ATR_VOLUME (volume only),
+                ATR_SPEED_VOLUME (speed+volume), VEHICLE_CLASS (vehicle class +
+                volume).
+              </td>
+            </tr>
+            <tr>
+              <td>count_date_start / count_date_end</td>
+              <td>Start/end date of the study period.</td>
+            </tr>
+            <tr>
+              <td>count_duration</td>
+              <td>Study length in hours.</td>
+            </tr>
+            <tr>
+              <td>location_name</td>
+              <td>
+                Readable site name (e.g., “Bloor St: Yonge St – Park Rd”).
+              </td>
+            </tr>
+            <tr>
+              <td>longitude / latitude</td>
+              <td>Site coordinates.</td>
+            </tr>
+            <tr>
+              <td>centreline_id</td>
+              <td>
+                Identifier to join with Toronto Centreline geometry for mapping.
+              </td>
+            </tr>
+            <tr>
+              <td>avg_daily_vol</td>
+              <td>
+                Average daily vehicle volume over the study duration (grand
+                total ÷ number of study days).
+              </td>
+            </tr>
+            <tr>
+              <td>avg_weekday_daily_vol</td>
+              <td>
+                Average weekday daily volume (weekdays only). May be
+                <em>none</em> for weekend only studies.
+              </td>
+            </tr>
+            <tr>
+              <td>avg_weekend_daily_vol</td>
+              <td>
+                Average weekend daily volume (Sat/Sun only). Present for studies
+                that include weekends.
+              </td>
+            </tr>
+            <tr>
+              <td>avg_wkdy_am_peak_start / avg_wkdy_am_peak_vol</td>
+              <td>
+                Weekday AM peak hour start and average vehicles during that
+                hour.
+              </td>
+            </tr>
+            <tr>
+              <td>avg_wkdy_pm_peak_start / avg_wkdy_pm_peak_vol</td>
+              <td>
+                Weekday PM peak hour start and average vehicles during that
+                hour.
+              </td>
+            </tr>
+            <tr>
+              <td>avg_speed</td>
+              <td>
+                Mean vehicle speed over the study duration (if speed data
+                collected).
+              </td>
+            </tr>
+            <tr>
+              <td>avg_85th_percentile_speed / avg_95th_percentile_speed</td>
+              <td>
+                Speed at/below which 85% / 95% of vehicles travel (if
+                available).
+              </td>
+            </tr>
+            <tr>
+              <td>avg_heavy_pct</td>
+              <td>
+                Percent of vehicles that are heavy (buses + trucks, FHWA classes
+                4–13), if classification collected.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="content card">
+        <h3>How to Read the Charts</h3>
+        <ul>
+          <li>
+            <strong>Weekly Average:</strong> we group study days by ISO week
+            (strftime('%Y-%W')) to smooth single-day/short-run studies.
+          </li>
+          <li>
+            <strong>Day-of-Week:</strong> average daily volume by weekday
+            (Sun–Sat) to show typical weekly pattern.
+          </li>
+          <li>
+            <strong>Notes:</strong> Studies are short-term snapshots (not
+            continuous counters). Some locations have only 1–2 study weeks, so
+            lines may connect widely spaced points in time.
+          </li>
+        </ul>
+      </section>
+
+      <section class="content card">
+        <h3>Credits & Sources</h3>
+        <p>
+          Data: City of Toronto Open Data - midblock vehicle speed, volume and
+          classification counts (catalogue entry currently marked “Retired”).
+          Program context and uses described by the City (safety, traffic
+          calming, design).
+          <a
+            href="https://open.toronto.ca/dataset/traffic-volumes-midblock-vehicle-speed-volume-and-classification-counts/"
+            target="_blank"
+            rel="noopener"
+            >Dataset page</a
+          >
+          |
+          <a
+            href="https://www.toronto.ca/news/city-of-toronto-publishes-new-transportation-datasets-that-highlight-travel-trends-and-support-traffic-management-actions/"
+            target="_blank"
+            rel="noopener"
+            >Program overview</a
+          >.
+        </p>
+      </section>
     </main>
   </body>
 </html>

@@ -11,8 +11,8 @@ const templatesDir = path.resolve("templates");
 const app = express();
 app.use(express.static(publicDir));
 
-app.set('view engine', 'ejs');
-app.set('views', templatesDir);
+app.set("view engine", "ejs");
+app.set("views", templatesDir);
 
 // explicit home route for render
 app.get("/", (req, res) => {
@@ -35,8 +35,9 @@ app.get("/locations", (req, res) => {
     if (count < 2) return;
     let items = "";
     for (let r of rows) {
-      items += `<li><a href="/locations/${encodeURIComponent(r.name)}">${r.name
-        }</a></li>`;
+      items += `<li><a href="/locations/${encodeURIComponent(r.name)}">${
+        r.name
+      }</a></li>`;
     }
 
     let html = template
@@ -118,16 +119,24 @@ app.get("/types", (req, res) => {
   let template = "";
   let rows = [];
 
+  const labelMap = {
+    ATR_SPEED_VOLUME: "Speed + Volume Studies",
+    ATR_VOLUME: "Volume Only Studies",
+    VEHICLE_CLASS: "Vehicle Classification Studies",
+  };
+
   function maybeSend() {
     if (count < 2) return;
 
     let items = "";
     for (let r of rows) {
-      items += `<li><a href="/types/${encodeURIComponent(r.tp)}">${r.tp
-        }</a></li>`;
+      const label = labelMap[r.tp] || r.tp;
+      items += `<li><a href="/types/${encodeURIComponent(
+        r.tp
+      )}">${label}</a></li>`;
     }
 
-    let html = template
+    const html = template
       .replaceAll("$$$TITLE$$$", "Types")
       .replaceAll("$$$NAV$$$", "")
       .replaceAll("$$$LIST_ITEMS$$$", items);
@@ -145,7 +154,7 @@ app.get("/types", (req, res) => {
   db.all(
     `SELECT DISTINCT count_type AS tp
      FROM counts
-     WHERE tp IS NOT NULL
+     WHERE count_type IS NOT NULL     -- ← use the real column name here
      ORDER BY tp;`,
     [],
     (err, r) => {
@@ -157,13 +166,11 @@ app.get("/types", (req, res) => {
   );
 });
 
-// PLACE THESE NEAR OTHER TOP-LEVEL ROUTES, ABOVE THE 404 HANDLER
-
-app.get('/charts', (req, res) => {
-  res.render('chart'); // templates/chart.ejs
+app.get("/charts", (req, res) => {
+  res.render("chart"); // templates/chart.ejs
 });
 
-app.get('/api/top10', (req, res) => {
+app.get("/api/top10", (req, res) => {
   const sql = `
     SELECT location_name AS label,
            AVG(avg_daily_vol) AS value
@@ -178,7 +185,6 @@ app.get('/api/top10', (req, res) => {
     res.json(rows);
   });
 });
-
 
 // detaile route
 app.get("/locations/:name", (req, res) => {
@@ -203,7 +209,7 @@ app.get("/locations/:name", (req, res) => {
       return res.status(404).type("html").send(html);
     }
 
-    // Build charts HTML (two canvases): weekly + day-of-week
+    // Build charts weekly + day-of-week
     const charts = `
       <div style="display:grid; gap:24px;">
         <section>
@@ -221,11 +227,11 @@ app.get("/locations/:name", (req, res) => {
       <script>
         // Server data:
         const weekly = ${JSON.stringify(
-      weekly
-    )}; // [{label:'YYYY-WW', value:...}]
+          weekly
+        )}; // [{label:'YYYY-WW', value:...}]
         const dow    = ${JSON.stringify(
-      dow
-    )};    // [{dow:'0', value:...}] 0=Sun
+          dow
+        )};    // [{dow:'0', value:...}] 0=Sun
 
         // --- Weekly line or bar depending on density ---
         (function(){
@@ -408,6 +414,13 @@ app.get("/types/:tp", (req, res) => {
   let template = "";
   let series = [];
 
+  const labelMap = {
+    ATR_SPEED_VOLUME: "Speed + Volume Studies",
+    ATR_VOLUME: "Volume Only Studies",
+    VEHICLE_CLASS: "Vehicle Classification Studies",
+  };
+  const readable = labelMap[tp] || tp;
+
   function maybeSend() {
     if (count < 2) return;
 
@@ -443,7 +456,7 @@ app.get("/types/:tp", (req, res) => {
     `;
 
     let html = template
-      .replaceAll("$$$TITLE$$$", tp)
+      .replaceAll("$$$TITLE$$$", readable)
       .replaceAll("$$$SUBTITLE$$$", "Average Daily Volume Over Time")
       .replaceAll("$$$MEDIA$$$", chart)
       .replaceAll("$$$BODY$$$", "")
